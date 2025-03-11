@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using MySql.Data.MySqlClient;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 
 class Program
 {
@@ -11,6 +12,18 @@ class Program
 
     static void Main()
     {
+        // Open the logo image at startup
+        string logoPath = @"C:\Users\Dell\source\New folder\LOGO.png";
+
+        if (File.Exists(logoPath))
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = logoPath,
+                UseShellExecute = true
+            });
+        }
+
         while (true)
         {
             Console.Clear();
@@ -50,6 +63,7 @@ class Program
             Console.ReadKey();
         }
     }
+
 
     static void EnterStudentMarks()
     {
@@ -219,6 +233,7 @@ class Program
     }
 
     static void GenerateResultSlip()
+
     {
         try
         {
@@ -269,6 +284,16 @@ class Program
                 Document doc = new Document();
                 PdfWriter writer = PdfWriter.GetInstance(doc, ms);
                 doc.Open();
+
+                string logoPath = @"C:\Users\Dell\source\New folder\LOGO.png";
+                if (File.Exists(logoPath))
+                {
+                    Image logo = Image.GetInstance(logoPath);
+                    logo.ScaleToFit(100f, 100f); // Adjust size
+                    logo.Alignment = Element.ALIGN_CENTER;
+                    doc.Add(logo);
+                }
+
 
                 // Add content to PDF
                 doc.Add(new Paragraph("KCA UNIVERSITY"));
